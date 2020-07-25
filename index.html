@@ -107,7 +107,48 @@ async function write(value) {
   }
 }
 
-//also handle
+//also handle keys
+
+//event listener
+window.addEventListener("keydown", onKeyDown, false);
+window.addEventListener("keyup", onKeyUp, false);
+
+function onKeyDown(event) {
+  var keyCode = event.keyCode;
+  switch (keyCode) {
+    case 68: //d
+      write('right')
+      break;
+    case 83: //s
+      write('back')
+      break;
+    case 65: //a
+      write('left')
+      break;
+    case 87: //w
+      write('forward')
+      break;
+  }
+}
+
+function onKeyUp(event) {
+  var keyCode = event.keyCode;
+
+  switch (keyCode) {
+    case 68: //d
+      write('stop')
+      break;
+    case 83: //s
+      write('stop')
+      break;
+    case 65: //a
+      write('stop')
+      break;
+    case 87: //w
+      write('stop')
+      break;
+  }
+}
 
 </script>
 </html>

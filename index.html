@@ -25,7 +25,7 @@
     <tr>
       <td><button class=write data-value="left">⬅️</button></td>
       <td><button class=write data-value="stop">🛑</button></td>
-      <td><button class=write data-value="right">⬅️</button>➡️</td>
+      <td><button class=write data-value="right">⬅️</button></td>
     </tr>
     <tr>
       <td></td>
@@ -68,8 +68,11 @@ document.getElementById('connect').addEventListener('click', async e => {
   }
 })
  
-document.getElementsByClassName('write').addEventListener('click', async (e) => {
-  write(e.target.dataset.value);
+const buttons = document.getElementsByClassName('write')
+Array.from(buttons).forEach(element => {
+  element..addEventListener('click', async (e) => {
+    write(e.target.dataset.value);
+  });
 });
 
 async function write(value) {

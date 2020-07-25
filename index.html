@@ -102,7 +102,7 @@ async function write(value) {
     await characteristic.writeValue(encoder.encode(value));
     console.log(`Wrote value`, value, encoder.encode(value));
   } catch (e) {
-    console.error('error')
+    console.error('error', e)
     alert('bluetooth error, try to reconnect')
   }
 }

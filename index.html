@@ -48,6 +48,8 @@ const writeCharacteristicUuid = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 let writeDescriptor;
 let characteristic
 let device
+let encoder = new TextEncoder('utf-8');
+
 
 document.getElementById('connect').addEventListener('click', async e => {
 
@@ -92,11 +94,10 @@ function handleDisconnect () {
 }
 
 async function write(value) {
-  let encoder = new TextEncoder('utf-8');
-  gattQueue.push( async () => {
-   await characteristic.writeValue(encoder.encode(value)) 
-   console.log(`Wrote value`, value, encoder.encode(value));
-  });
+  if (value == "stop") {
+    gattQueue = []; // if it's stop, disregard everything else
+  }
+  gattQueue.push( value );
 }
 
 //also handle keys
@@ -151,11 +152,13 @@ setInterval( async () => {
       return
     } 
 
-    const next = gattQueue.pop();
+    const nextValue = gattQueue.pop();
 
     if (next) {
-      await next();
+      await characteristic.writeValue(encoder.encode(value))
+      console.log(`Wrote value`, value, encoder.encode(value));
     }
+
   } catch (e) {
     console.error('error', e)
     //alert('bluetooth error, try to reconnect')

@@ -18,7 +18,7 @@ const writeCharacteristicUuid = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
 let writeDescriptor;
 let characteristic
 
-document.getElementById('connect').addEventListener('click', () => {
+document.getElementById('connect').addEventListener('click', async () => {
   
   try {
     console.log('requesting any Bluetooth Device...');
@@ -39,10 +39,15 @@ document.getElementById('connect').addEventListener('click', () => {
   
 })
  
-document.getElementById('stop').addEventListener('click', () => {
+document.getElementById('stop').addEventListener('click', async () => {
+  write('stop')
+});
+
+async function write(value) {
   let encoder = new TextEncoder('utf-8');
   await writeDescriptor.writeValue(encoder.encode(value));
-});
+  console.log(`Wrote value`, value, encoder.encode(value));
+}
 
 </script>
 </html>

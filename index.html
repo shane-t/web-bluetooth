@@ -2,11 +2,37 @@
 <html>
 <head>
   <title>bluetooth</title>
+  <style>
+    table.controls {
+      width: 100%;
+    }
+
+    table.controls td {
+      width: 33%;
+    }
+  </style>
 </head>
 <body>
 
 <div>
   <button id=connect>Not connected</button>
+  <table>
+    <tr>
+      <td></td>
+      <td><button class=write data-value="forward"></button></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><button class=write data-value="left"></button></td>
+      <td><button class=write data-value="stop"></button></td>
+      <td><button class=write data-value="right"></button></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><button class=write data-value="back"></button></td>
+      <td></td>
+    </tr>
+  </table>
   <button id=stop>Stop</button>
 </div>
 
@@ -18,7 +44,7 @@ const writeCharacteristicUuid = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 let writeDescriptor;
 let characteristic
 
-document.getElementById('connect').addEventListener('click', async () => {
+document.getElementById('connect').addEventListener('click', async e => {
   
   try {
     console.log('requesting any Bluetooth Device...');
@@ -36,14 +62,14 @@ document.getElementById('connect').addEventListener('click', async () => {
     characteristic = await service.getCharacteristic(writeCharacteristicUuid);
     
     document.querySelector('#connect').disabled = !characteristic.properties.write;
-  
+    e.targer.textContent = 'connected';
   } catch (e) {
     console.error(e);
   }
 })
  
-document.getElementById('stop').addEventListener('click', async () => {
-  write('stop')
+document.getElementByClassName('write').addEventListener('click', async (e) => {
+  write(e.target.dataset.value);
 });
 
 async function write(value) {

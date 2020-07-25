@@ -147,7 +147,7 @@ const gattQueue = []
 setInterval( async () => {
 
   try {
-    if (!device.gatt || !device.gatt.connected) {
+    if (!device?.gatt?.connected) {
       return
     } 
 

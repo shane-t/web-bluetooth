@@ -86,8 +86,17 @@ document.getElementById('connect').addEventListener('click', async e => {
 const buttons = document.getElementsByClassName('write')
 Array.from(buttons).forEach(element => element.addEventListener('click', e => write(e.target.dataset.value)))
 
+function handleDisconnect () {
+  document.getElementById('connect').textContent = 'connect'
+  alert('bluetooth disconnected')
+}
 
 async function write(value) {
+
+  if (!device.gatt || !device.gatt.connected) {
+    return
+  } 
+
   try {
     let encoder = new TextEncoder('utf-8');
     await characteristic.writeValue(encoder.encode(value));

@@ -20,7 +20,7 @@
 <body>
 
 <div>
-  <button id=connect>Not connected</button>
+  <button id=connect>connect</button>
   <table class=controls>
     <tr>
       <td></td>
@@ -47,28 +47,40 @@ const writeCharacteristicUuid = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
 let writeDescriptor;
 let characteristic
+let device
 
 document.getElementById('connect').addEventListener('click', async e => {
+
+  if (device.gatt.connected) {
   
-  try {
-    console.log('requesting any Bluetooth Device...');
-    const device = await navigator.bluetooth.requestDevice({
-     // filters: [...] <- Prefer filters to save energy & show relevant devices.
-        acceptAllDevices: true, optionalServices: [serviceUuid]});
+    try {
+      console.log('requesting any Bluetooth Device...');
+      device = await navigator.bluetooth.requestDevice({
+        filters: 
+        [ 
+          { services: [ serviceUuid ] }
+        ]
+      });
+        
+      
 
-    console.log('Connecting to GATT Server...');
-    const server = await device.gatt.connect();
+      console.log('Connecting to GATT Server...');
+      const server = await device.gatt.connect();
 
-    console.log('Getting Service...');
-    const service = await server.getPrimaryService(serviceUuid);
+      console.log('Getting Service...');
+      const service = await server.getPrimaryService(serviceUuid);
 
-    console.log('Getting Characteristic...');
-    characteristic = await service.getCharacteristic(writeCharacteristicUuid);
-    
-    document.querySelector('#connect').disabled = !characteristic.properties.write;
-    e.target.textContent = 'connected';
-  } catch (e) {
-    console.error(e);
+      console.log('Getting Characteristic...');
+      characteristic = await service.getCharacteristic(writeCharacteristicUuid);
+      
+      e.target.textContent = 'connected';
+    } catch (e) {
+      console.error(e);
+    }
+
+  } else {
+    await device.gatt.disconnect()
+    e.target.textContent = 'connect';
   }
 })
  
@@ -81,6 +93,8 @@ async function write(value) {
   await characteristic.writeValue(encoder.encode(value));
   console.log(`Wrote value`, value, encoder.encode(value));
 }
+
+//also handle
 
 </script>
 </html>

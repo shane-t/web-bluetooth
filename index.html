@@ -73,7 +73,7 @@ document.getElementById('connect').addEventListener('click', async e => {
 })
  
 const buttons = document.getElementsByClassName('write')
-Array.from(buttons).forEach(element => element.addEventListener('click', write(e.target.dataset.value)))
+Array.from(buttons).forEach(element => element.addEventListener('click', e => write(e.target.dataset.value)))
 
 
 async function write(value) {

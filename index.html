@@ -62,7 +62,7 @@ document.getElementById('connect').addEventListener('click', async e => {
     characteristic = await service.getCharacteristic(writeCharacteristicUuid);
     
     document.querySelector('#connect').disabled = !characteristic.properties.write;
-    e.targer.textContent = 'connected';
+    e.target.textContent = 'connected';
   } catch (e) {
     console.error(e);
   }

@@ -92,19 +92,11 @@ function handleDisconnect () {
 }
 
 async function write(value) {
-
-  if (!device.gatt || !device.gatt.connected) {
-    return
-  } 
-
-  try {
-    let encoder = new TextEncoder('utf-8');
-    await characteristic.writeValue(encoder.encode(value));
-    console.log(`Wrote value`, value, encoder.encode(value));
-  } catch (e) {
-    console.error('error', e)
-    //alert('bluetooth error, try to reconnect')
-  }
+  let encoder = new TextEncoder('utf-8');
+  gattQueue.push( async () => {
+   await characteristic.writeValue(encoder.encode(value)) 
+   console.log(`Wrote value`, value, encoder.encode(value));
+  });
 }
 
 //also handle keys
@@ -149,6 +141,26 @@ function onKeyUp(event) {
       break;
   }
 }
+
+const gattQueue = []
+
+setInterval( async () => {
+
+  try {
+    if (!device.gatt || !device.gatt.connected) {
+      return
+    } 
+
+    const next = gattQueue.pop();
+
+    if (next) {
+      await next();
+    }
+  } catch (e) {
+    console.error('error', e)
+    alert('bluetooth error, try to reconnect')
+  }
+}, 50);
 
 </script>
 </html>

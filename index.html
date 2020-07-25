@@ -51,8 +51,10 @@ let device
 
 document.getElementById('connect').addEventListener('click', async e => {
 
-  if (device.gatt.connected) {
-  
+  if (device?.gatt?.connected) {
+    await device.gatt.disconnect()
+    e.target.textContent = 'connect';
+  } else {
     try {
       console.log('requesting any Bluetooth Device...');
       device = await navigator.bluetooth.requestDevice({
@@ -77,10 +79,6 @@ document.getElementById('connect').addEventListener('click', async e => {
     } catch (e) {
       console.error(e);
     }
-
-  } else {
-    await device.gatt.disconnect()
-    e.target.textContent = 'connect';
   }
 })
  

@@ -154,9 +154,9 @@ setInterval( async () => {
 
     const nextValue = gattQueue.pop();
 
-    if (next) {
-      await characteristic.writeValue(encoder.encode(value))
-      console.log(`Wrote value`, value, encoder.encode(value));
+    if (nextValue) {
+      await characteristic.writeValue(encoder.encode(nextValue))
+      console.log(`Wrote value`, nextValue, encoder.encode(nextValue));
     }
 
   } catch (e) {

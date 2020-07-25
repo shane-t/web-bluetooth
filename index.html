@@ -48,7 +48,7 @@ document.getElementById('stop').addEventListener('click', async () => {
 
 async function write(value) {
   let encoder = new TextEncoder('utf-8');
-  await writeDescriptor.writeValue(encoder.encode(value));
+  await characteristic.writeValue(encoder.encode(value));
   console.log(`Wrote value`, value, encoder.encode(value));
 }
 

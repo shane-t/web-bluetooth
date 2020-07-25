@@ -37,6 +37,9 @@ document.getElementById('connect').addEventListener('click', async () => {
     
     document.querySelector('#connect').disabled = !characteristic.properties.write;
   
+  } catch (e) {
+    console.error(e);
+  }
 })
  
 document.getElementById('stop').addEventListener('click', async () => {

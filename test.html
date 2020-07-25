@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <title>bluetooth</title>
+</head>
+<body>
+
+<div>
+  <button id=connect>Not connected</button>
+  <button id=stop>Stop</button>
+</div>
+
+
+const serviceUuid = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+const writeCharacteristicUuid = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+
+let writeDescriptor;
+let characteristic
+
+document.getElementById('connect').addEventListener('click', () => {
+  
+  try {
+    console.log('requesting any Bluetooth Device...');
+    const device = await navigator.bluetooth.requestDevice({
+     // filters: [...] <- Prefer filters to save energy & show relevant devices.
+        acceptAllDevices: true, optionalServices: [serviceUuid]});
+
+    console.log('Connecting to GATT Server...');
+    const server = await device.gatt.connect();
+
+    console.log('Getting Service...');
+    const service = await server.getPrimaryService(serviceUuid);
+
+    console.log('Getting Characteristic...');
+    characteristic = await service.getCharacteristic(writeCharacteristicUuid);
+    
+    document.querySelector('#connect').disabled = !characteristic.properties.write;
+  
+})
+ 
+document.getElementById('stop').addEventListener('click', () => {
+  let encoder = new TextEncoder('utf-8');
+  await writeDescriptor.writeValue(encoder.encode(value));
+});
+
+</script>
+</html>

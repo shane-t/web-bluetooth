@@ -95,7 +95,7 @@ function handleDisconnect () {
 
 async function write(value) {
   if (value == "stop") {
-    gattQueue = []; // if it's stop, disregard everything else
+    gattQueue.length = 0; // if it's stop, disregard everything else
   }
   gattQueue.push( value );
 }

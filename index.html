@@ -21,8 +21,8 @@
 
 <div>
   <button id=connect>connect</button> | 
-  <button id=yaw_state>yaw:</button> | 
-  <button id=pitch_state>pitch:</button>
+  <button disabled id=yaw_state>yaw:</button> | 
+  <button disabled id=pitch_state>pitch:</button>
   <table class=controls>
     <tr>
       <td></td>
@@ -92,7 +92,7 @@ document.getElementById('connect').addEventListener('click', async e => {
 
       const initialValue = await rxcharacteristic.readValue()
 
-      handleData({ target: { value: { initialValue } })
+      handleData({ target: { value: { initialValue } }})
 
       e.target.textContent = 'connected';
     } catch (e) {

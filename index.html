@@ -23,6 +23,8 @@
   <button id=connect>connect</button> | 
   <button disabled id=yaw_state>yaw:</button> | 
   <button disabled id=pitch_state>pitch:</button>
+  <button disabled id=speed_state>speed:</button> | 
+  <button disabled id=move_state>move:</button>
   <table class=controls>
     <tr>
       <td><button id=yawleft>yaw left+</button></td>
@@ -39,6 +41,11 @@
       <td><button class=write data-value="back">⬇️</button></td>
       <td><button id=pitchdown>pitch down+</button></td>
     </tr>
+    <tr>
+      <td><button id=speedup>speed -</button></td>
+      <td></td>
+      <td><button id=speeddown>speed+</button></td>
+    </tr>
   </table>
 </div>
 
@@ -54,7 +61,7 @@ let rxcharacteristic
 let device
 let encoder = new TextEncoder('utf-8');
 
-let state = { y: 320, p: 320 }
+let state = { y: 320, p: 320, s: 0, m: 0 }
 
 const MULTIPLIER = 10
 
@@ -123,6 +130,15 @@ document.getElementById('yawright').addEventListener('click', () => {
   pitch(-1)
 })
 
+document.getElementById('speedup').addEventListener('click', () => {
+  speed(1)
+})
+
+document.getElementById('speeddown').addEventListener('click', () => {
+  speed(-1)
+})
+
+
 function handleDisconnect () {
   document.getElementById('connect').textContent = 'connect'
   alert('bluetooth disconnected')
@@ -151,6 +167,12 @@ function yaw(amount) {
   const currentYaw = state.y
   newYaw = state.y + amount * MULTIPLIER
   write('yaw:' + newYaw)
+}
+
+function speed(amount) {
+  const currentYaw = state.s
+  newSpeed = state.s + amount * MULTIPLIER
+  write('speed:' + newSpeed)
 }
 
 function onKeyDown(event) {
@@ -215,7 +237,8 @@ function handleData(e) {
 
   document.getElementById('yaw_state').textContent = 'yaw:' + state.y
   document.getElementById('pitch_state').textContent = 'pitch: ' + state.p
-
+  document.getElementById('speed_state').textContent = 'speed:' + state.s
+  document.getElementById('move_state').textContent = 'pitch: ' + state.m
 }
 
 const gattQueue = []

@@ -103,10 +103,8 @@ document.getElementById('connect').addEventListener('click', async e => {
  
 const buttons = document.getElementsByClassName('write')
 Array.from(buttons).forEach(element => element.addEventListener('click', e => write(e.target.dataset.value)))
-document.getElementById('yaw').addEventListener('click', () => {
-  const yawValue = prompt('yaw value')
-  write('yaw:'+yawValue);
-})
+
+
 document.getElementById('pitchup').addEventListener('click', () => {
   pitch(-1)
 })

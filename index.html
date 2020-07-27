@@ -103,6 +103,8 @@ document.getElementById('connect').addEventListener('click', async e => {
 
       handleData({ target: { value: initialValue }})
 
+      device.addEventListener('gattserverdisconnected', handleDisconnect);
+ 
       e.target.textContent = 'connected';
     } catch (e) {
       console.error(e);
@@ -123,11 +125,11 @@ document.getElementById('pitchdown').addEventListener('click', () => {
 })
 
 document.getElementById('yawleft').addEventListener('click', () => {
-  pitch(1)
+  yaw(1)
 })
 
 document.getElementById('yawright').addEventListener('click', () => {
-  pitch(-1)
+  yaw(-1)
 })
 
 document.getElementById('speedup').addEventListener('click', () => {

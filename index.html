@@ -44,11 +44,16 @@
 
 const serviceUuid = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 const writeCharacteristicUuid = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+const readCharacteristicUuid  = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
 
-let writeDescriptor;
-let characteristic
+let writeDescriptor
+let txcharacteristic
+let rxcharacteristic
 let device
 let encoder = new TextEncoder('utf-8');
+
+let yawValue
+let pitchValue
 
 
 document.getElementById('connect').addEventListener('click', async e => {
@@ -72,9 +77,14 @@ document.getElementById('connect').addEventListener('click', async e => {
       console.log('Getting Service...');
       const service = await server.getPrimaryService(serviceUuid);
 
-      console.log('Getting Characteristic...');
-      characteristic = await service.getCharacteristic(writeCharacteristicUuid);
+      console.log('Getting TX Characteristic...');
+      txcharacteristic = await service.getCharacteristic(writeCharacteristicUuid);
       
+      console.log('Getting RX Characteristic');
+      rxcharacteristic = await service.getCharacteristic(readCharacteristicUuid)
+
+      rxcharacteristic.addEventListener('characteristicvaluechanged', handleData)
+
       e.target.textContent = 'connected';
     } catch (e) {
       console.error(e);
@@ -148,6 +158,11 @@ function onKeyUp(event) {
   }
 }
 
+function handleData(e) {
+  const data = e.target.value
+  console.log(data)
+}
+
 const gattQueue = []
 
 setInterval( async () => {
@@ -160,7 +175,7 @@ setInterval( async () => {
     const nextValue = gattQueue.pop();
 
     if (nextValue) {
-      await characteristic.writeValue(encoder.encode(nextValue))
+      await txcharacteristic.writeValue(encoder.encode(nextValue))
       console.log(`Wrote value`, nextValue, encoder.encode(nextValue));
     }
 

@@ -20,7 +20,9 @@
 <body>
 
 <div>
-  <button id=connect>connect</button>
+  <button id=connect>connect</button> | 
+  <button id=yaw_state>yaw:</button> | 
+  <button id=pitch_state>pitch:</button>
   <table class=controls>
     <tr>
       <td></td>
@@ -52,9 +54,7 @@ let rxcharacteristic
 let device
 let encoder = new TextEncoder('utf-8');
 
-let yawValue
-let pitchValue
-
+let state
 
 document.getElementById('connect').addEventListener('click', async e => {
 
@@ -82,8 +82,17 @@ document.getElementById('connect').addEventListener('click', async e => {
       
       console.log('Getting RX Characteristic');
       rxcharacteristic = await service.getCharacteristic(readCharacteristicUuid)
+      
+      console.log('Subscribing')
+      await rxcharacteristic.startNotifications();
 
       rxcharacteristic.addEventListener('characteristicvaluechanged', handleData)
+
+      console.log('getting initial value')
+
+      const initialValue = await rxcharacteristic.readValue()
+
+      handleData(initialValue)
 
       e.target.textContent = 'connected';
     } catch (e) {
@@ -159,8 +168,19 @@ function onKeyUp(event) {
 }
 
 function handleData(e) {
+  const decoder = new TextDecoder('utf-8')
   const data = e.target.value
-  console.log(data)
+  const stringValue = decoder.decode(data.buffer)
+
+  state = stringValue.split('|').reduce( (acc, current) => {
+    const [ key, value ] = current.split(':');
+    acc[key] = value
+    return acc
+  }, {})
+
+  document.getElementById('yaw_state').textContent = 'yaw:' + state.y
+  document.getElementById('pitch_state').textContent = 'pitch: ' + state.p
+
 }
 
 const gattQueue = []

@@ -195,7 +195,7 @@ function handleData(e) {
 
   state = stringValue.split('|').reduce( (acc, current) => {
     const [ key, value ] = current.split(':');
-    acc[key] = value
+    acc[key] = Number(value)
     return acc
   }, {})
 

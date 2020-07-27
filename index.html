@@ -87,11 +87,11 @@ document.getElementById('connect').addEventListener('click', async e => {
  
 const buttons = document.getElementsByClassName('write')
 Array.from(buttons).forEach(element => element.addEventListener('click', e => write(e.target.dataset.value)))
-document.getElementById('yaw').addEventListener('click' => {
+document.getElementById('yaw').addEventListener('click', () => {
   const yawValue = prompt('yaw value')
   write('yaw:'+yawValue);
 })
-document.getElementById('pitch').addEventListener('click' => {
+document.getElementById('pitch').addEventListener('click', () => {
   const pitchValue = prompt('pitch value')
   write('pitch:'+pitchValue);
 })

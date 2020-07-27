@@ -54,7 +54,7 @@ let rxcharacteristic
 let device
 let encoder = new TextEncoder('utf-8');
 
-let state
+let state = { y: 320, p: 320 }
 
 document.getElementById('connect').addEventListener('click', async e => {
 

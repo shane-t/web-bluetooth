@@ -60,10 +60,7 @@ document.getElementById('connect').addEventListener('click', async e => {
     try {
       console.log('requesting any Bluetooth Device...');
       device = await navigator.bluetooth.requestDevice({
-        //filters: 
-        //[ 
-        //{ services: [ serviceUuid ] }
-        //]
+        optionalServices: [ serviceUuid ],
         acceptAllDevices: true
       });
         

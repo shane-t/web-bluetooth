@@ -25,9 +25,9 @@
   <button disabled id=pitch_state>pitch:</button>
   <table class=controls>
     <tr>
-      <td></td>
+      <td><button id=yawleft>yaw left+</button></td>
       <td><button class=write data-value="forward">⬆️</button></td>
-      <td></td>
+      <td><button id=yawright>yaw right-</button></td>
     </tr>
     <tr>
       <td><button class=write data-value="left">⬅️</button></td>
@@ -35,9 +35,9 @@
       <td><button class=write data-value="right">➡</button></td>
     </tr>
     <tr>
-      <td><button id=yaw>yaw</button></td>
+      <td><button id=pitchup>pitch up-</button></td>
       <td><button class=write data-value="back">⬇️</button></td>
-      <td><button id=pitch>pitch</button></td>
+      <td><button id=pitchdown>pitch down+</button></td>
     </tr>
   </table>
 </div>
@@ -107,10 +107,21 @@ document.getElementById('yaw').addEventListener('click', () => {
   const yawValue = prompt('yaw value')
   write('yaw:'+yawValue);
 })
-document.getElementById('pitch').addEventListener('click', () => {
-  const pitchValue = prompt('pitch value')
-  write('pitch:'+pitchValue);
+document.getElementById('pitchup').addEventListener('click', () => {
+  pitch(-1)
 })
+
+document.getElementById('pitchdown').addEventListener('click', () => {
+  pitch(1)
+}
+
+document.getElementById('yawleft').addEventListener('click', () => {
+  pitch(1)
+})
+
+document.getElementById('yawright').addEventListener('click', () => {
+  pitch(-1)
+}
 
 function handleDisconnect () {
   document.getElementById('connect').textContent = 'connect'
@@ -129,6 +140,18 @@ async function write(value) {
 //event listener
 window.addEventListener("keydown", onKeyDown, false);
 window.addEventListener("keyup", onKeyUp, false);
+
+function pitch(amount) {
+  const currentPitch = state.p
+  newPitch = state.p + amount
+  write('pitch:' + newPitch)
+}
+
+function yaw(amount) {
+  const currentYaw = state.y
+  newYaw = state.y + amount
+  write('yaw:' + newYaw)
+}
 
 function onKeyDown(event) {
   var keyCode = event.keyCode;

@@ -166,6 +166,18 @@ function onKeyDown(event) {
     case 87: //w
       write('forward')
       break;
+    case 81: //q
+      yaw(1);
+      break;
+    case 69: //e
+      yaw(-1);
+      break;
+    case 90: //z
+      pitch(1);
+      break;
+    case 88: //x
+      pitch(-1)
+      break;
   }
 }
 
@@ -184,18 +196,6 @@ function onKeyUp(event) {
       break;
     case 87: //w
       write('stop')
-      break;
-    case 81: //q
-      yaw(1);
-      break;
-    case 69: //e
-      yaw(-1);
-      break;
-    case 90: //z
-      pitch(1);
-      break;
-    case 88: //x
-      pitch(-1)
       break;
   }
 }

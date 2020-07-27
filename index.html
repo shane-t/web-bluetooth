@@ -56,6 +56,8 @@ let encoder = new TextEncoder('utf-8');
 
 let state = { y: 320, p: 320 }
 
+const MULTIPLIER = 10
+
 document.getElementById('connect').addEventListener('click', async e => {
 
   if (device?.gatt?.connected) {
@@ -141,13 +143,13 @@ window.addEventListener("keyup", onKeyUp, false);
 
 function pitch(amount) {
   const currentPitch = state.p
-  newPitch = state.p + amount
+  newPitch = state.p + amount * MULTIPLIER
   write('pitch:' + newPitch)
 }
 
 function yaw(amount) {
   const currentYaw = state.y
-  newYaw = state.y + amount
+  newYaw = state.y + amount * MULTIPLIER
   write('yaw:' + newYaw)
 }
 
